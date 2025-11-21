@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Security.usermanagement.dto.LoginDto;
+import com.Security.usermanagement.dto.LoginResponse;
 import com.Security.usermanagement.service.LoginService;
 
 @RestController
@@ -20,7 +21,7 @@ public class LoginController {
 	}
 
 	@PostMapping(value ="/login")
-	public ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto){
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginDto){
 		return loginService.login(loginDto);
 	}
 }

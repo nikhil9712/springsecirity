@@ -2,6 +2,7 @@ package com.Security.usermanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class SignUpController {
 	
 	@Autowired
 	private SignUpService service;
-
+	
 	@PostMapping("/signUp")
 	public ResponseEntity<SignResponseDto> signUp(@RequestBody SignUpDto SignUpDto) {
 		return service.signUp(SignUpDto);

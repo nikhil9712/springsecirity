@@ -1,11 +1,9 @@
 package com.Security.usermanagement.dto;
 
-import lombok.Data;
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 
-@Data
+import org.springframework.http.HttpStatus;
+
 public class ApiError {
 
     private LocalDateTime timeStamp;
@@ -21,4 +19,29 @@ public class ApiError {
         this.error = error;
         this.statusCode = statusCode;
     }
+
+	public LocalDateTime getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(LocalDateTime timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public HttpStatus getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(HttpStatus statusCode) {
+		this.statusCode = statusCode;
+	}
+    
 }

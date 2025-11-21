@@ -1,6 +1,10 @@
 package com.Security.usermanagement.entity;
 
 import java.time.LocalDate;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +16,7 @@ import lombok.Builder;
 @Entity
 @Table(name = "USERMASTER")
 @Builder
-public class UserEntity {
+public class UserEntity implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +64,18 @@ public class UserEntity {
 	public String toString() {
 		return "UserEntity [id=" + id + ", userName=" + userName + ", password=" + password + ", createdAt=" + createdAt
 				+ "]";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import com.Security.usermanagement.dto.SignResponseDto;
@@ -23,6 +24,9 @@ public class SignUpService {
 
 	@Autowired
 	private UserEntityRepository entityRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public ResponseEntity<SignResponseDto> signUp(SignUpDto signUpDto) {
 		SignResponseDto signResponseDto = new SignResponseDto();
@@ -34,7 +38,7 @@ public class SignUpService {
 			}
 			UserEntity entity = new UserEntity();
 			entity.setUserName(signUpDto.getUserName());
-			entity.setPassword(signUpDto.getPassword());
+			entity.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 			entityRepository.save(entity);
 			signResponseDto.setMessage("Successfully Sign up");
 			return ResponseEntity.ok(signResponseDto);

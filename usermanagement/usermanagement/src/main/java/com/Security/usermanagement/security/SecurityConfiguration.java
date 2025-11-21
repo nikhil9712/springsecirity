@@ -21,8 +21,9 @@ public class SecurityConfiguration {
 		return config.csrf(csrf -> csrf.disable())
 				// Adding stateless skipped my login api JWT filte how need to learn
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(request -> request.requestMatchers("/public/*", "/getEmployees", "/login")
-						.permitAll().requestMatchers("/login*").permitAll().anyRequest().authenticated())
+				.authorizeHttpRequests(
+						request -> request.requestMatchers("/login").permitAll().requestMatchers("/signUp").permitAll()
+								.requestMatchers("/getEmployees*").permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.formLogin(form -> form.disable()).build();
 	}

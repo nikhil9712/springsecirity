@@ -13,7 +13,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @org.springframework.context.annotation.Configuration
 public class Configuration {
 
-	@Bean
+	//@Bean
 	public UserDetailsService detailsServices() {
 		UserDetails user1 = User.withUsername("Nikhil").password(passwordEncoder().encode("Nikhil@123")).roles("ADMIN").build();
 		UserDetails user2 = User.withUsername("Sarang").password(passwordEncoder().encode("Sarang@123")).roles("ADMIN").build();
