@@ -23,7 +23,7 @@ public class SecurityConfiguration {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
 						request -> request.requestMatchers("/login").permitAll().requestMatchers("/signUp").permitAll()
-								.requestMatchers("/getEmployees*").permitAll().anyRequest().authenticated())
+								.requestMatchers("/getEmployeessssss*").permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.formLogin(form -> form.disable()).build();
 	}
