@@ -22,8 +22,8 @@ public class SecurityConfiguration {
 				// Adding stateless skipped my login api JWT filte how need to learn
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
-						request -> request.requestMatchers("/login").permitAll().requestMatchers("/signUp").permitAll()
-								.requestMatchers("/getEmployeessssss*").permitAll().anyRequest().authenticated())
+						request -> request.requestMatchers("/login","/refreshToken").permitAll().requestMatchers("/signUp").permitAll()
+								.requestMatchers("/refreshToken*").permitAll().requestMatchers("/getEmployeessssss").permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.formLogin(form -> form.disable()).build();
 	}

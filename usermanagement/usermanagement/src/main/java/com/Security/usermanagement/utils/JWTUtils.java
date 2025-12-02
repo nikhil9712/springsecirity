@@ -20,19 +20,43 @@ public class JWTUtils {
 	@Value("${jwt.secret}")
 	private String secretKey;
 	
-	private SecretKey getScreSecretKey() {
-		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+	@Value("${jwt.secret.refresh}")
+	private String refreshSecretkey;
+	
+	@Value("${access_Token.Expiry.time}")
+	private long accessTokenExpiryTime;
+
+	@Value("${refresh_Token.Expiry.time}")
+	private long refreshTokenExpiryTime;
+
+	private SecretKey getScreSecretKey(String token) {
+		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(token));
 	}
 
-	public String generateJwt(UserEntity userEntity) {
+	public String generateAccessToken(UserEntity userEntity) {
 		return Jwts.builder().subject(userEntity.getUsername()).claim("UserId", String.valueOf(userEntity.getId()))
-				.issuedAt(new Date()).expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-				.signWith(getScreSecretKey()).compact();
+				.issuedAt(new Date()).expiration(new Date(System.currentTimeMillis() + accessTokenExpiryTime))
+				.signWith(getScreSecretKey(secretKey)).compact();
+		
 	}
 
 	public String getUserNameFromToken(String token) {
-		Claims claims = Jwts.parser().verifyWith(getScreSecretKey()).build().parseSignedClaims(token).getPayload();
+		Claims claims = Jwts.parser().verifyWith(getScreSecretKey(secretKey)).build().parseSignedClaims(token).getPayload();
 		return claims.getSubject();
+	}
+
+	public UserEntity validaterefreshToken(String refreshToken) {
+		UserEntity userEntity=new UserEntity();
+		Claims claims = Jwts.parser().verifyWith(getScreSecretKey(refreshSecretkey)).build().parseSignedClaims(refreshToken).getPayload();
+		userEntity.setUserName(claims.getSubject());
+		userEntity.setId(Long.valueOf((String) claims.get("UserId")));
+		return userEntity;
+	}
+
+	public String generaterefreshToken(UserEntity userEntity) {
+		return Jwts.builder().subject(userEntity.getUsername()).claim("UserId", String.valueOf(userEntity.getId()))
+				.issuedAt(new Date()).expiration(new Date(System.currentTimeMillis() + refreshTokenExpiryTime))
+				.signWith(getScreSecretKey(refreshSecretkey)).compact();
 	}
 
 }

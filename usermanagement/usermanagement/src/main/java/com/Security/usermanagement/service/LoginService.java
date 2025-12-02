@@ -1,7 +1,11 @@
 package com.Security.usermanagement.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +23,7 @@ public class LoginService {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private JWTUtils jwtUtils;
 
@@ -29,7 +33,18 @@ public class LoginService {
 		UserEntity userEntity = (UserEntity) authenticate.getPrincipal();
 		System.out.println(userEntity.getUsername());
 		LoginResponse dto = new LoginResponse();
-		dto.setAccessToken(jwtUtils.generateJwt(userEntity));
+		dto.setAccessToken(jwtUtils.generateAccessToken(userEntity));
+		dto.setRefreshtoken(jwtUtils.generaterefreshToken(userEntity));
 		return ResponseEntity.ok(dto);
+	}
+
+	public ResponseEntity<Map<String, String>> refreshToken(String refreshToken) {
+		Map<String, String> map = new HashMap<>();
+		UserEntity userEntity = jwtUtils.validaterefreshToken(refreshToken);
+		String accessToken = jwtUtils.generateAccessToken(userEntity);
+		String generaterefreshToken = jwtUtils.generaterefreshToken(userEntity);
+		map.put("accessToken", accessToken);
+		map.put("refreshToken", generaterefreshToken);
+		return ResponseEntity.ok(map);
 	}
 }
