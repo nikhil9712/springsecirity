@@ -17,15 +17,24 @@ public class SecurityConfiguration {
 	private JWTFilter jwtFilter;
 
 	@Bean
-	public SecurityFilterChain filterChain1(HttpSecurity config) throws Exception {
-		return config.csrf(csrf -> csrf.disable())
-				// Adding stateless skipped my login api JWT filte how need to learn
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(
-						request -> request.requestMatchers("/login","/refreshToken").permitAll().requestMatchers("/signUp").permitAll()
-								.requestMatchers("/refreshToken*").permitAll().requestMatchers("/getEmployeessssss").permitAll().anyRequest().authenticated())
-				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-				.formLogin(form -> form.disable()).build();
-	}
+	public SecurityFilterChain filterChain1(HttpSecurity config) throws Exception {return config.csrf(csrf -> csrf.disable())
+		    .sessionManagement(session ->
+	        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	    .authorizeHttpRequests(request -> request
+	        // Public APIs
+	        .requestMatchers("/login", "/refreshToken", "/signUp").permitAll()
+	        .requestMatchers("/refreshToken*").permitAll()
+	        .requestMatchers("/getEmployeessssss").permitAll()
+
+	        // Role-protected API
+	        .requestMatchers("/reports").hasRole("ADMIN")
+
+	        // Everything else
+	        .anyRequest().authenticated()
+	    )
+	    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+	    .formLogin(form -> form.disable())
+	    .build();
+}
 
 }
